@@ -1,0 +1,18 @@
+// Header Component Styling
+
+//App logo
+.site-logo {
+  padding-right: 3.95rem;
+  line-height: 15px;
+}
+.shajara-toolbar,
+.horizontal-menu {
+  width: 1170px;
+  left: inherit;
+  right: inherit;
+}
+@media (max-width: 800px) {
+  .site-logo {
+    padding-right: 0.9rem;
+  }
+}

@@ -5,12 +5,12 @@
     </v-navigation-drawer>
     <v-toolbar fixed app dark clipped-left color="primary" class="shajara-toolbar">
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+
       <v-toolbar-title>
-        <div class="site-logo mt-2">
-          <router-link to="/">
-            <img src="../assets/logo.png" alt="site logo" width="100" height="30">
-          </router-link>
-        </div>
+        <span class="site-logo mt-2" @click="navigateTo({name:'Stats'})">
+          <!-- <img src="../assets/logo.png" alt="site logo" width="100" height="30"> -->
+          {{title}}
+        </span>
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
@@ -31,15 +31,13 @@ import Sidebar from './Sidebar'
 export default {
   data: () => {
     return {
-      slider: 56,
-      tile: true,
       drawer: true,
       title: 'Shajara'
     }
   },
-  computed: {
-    avatarSize () {
-      return `${this.slider}px`
+  methods: {
+    navigateTo (route) {
+      this.$router.push(route)
     }
   },
   components: {
@@ -47,3 +45,8 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+  .site-logo {
+    cursor: pointer
+  }
+</style>

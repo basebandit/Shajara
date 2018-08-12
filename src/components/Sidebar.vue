@@ -14,8 +14,9 @@
         </v-list-tile>
         <template v-if="countMemories !== 0">
           <v-list two-line>
-            <template v-for="(memory, index) in memories">
-              <v-list-tile :key="memory.title" avatar>
+            <template v-for="(memory, index) in getMemories">
+
+              <v-list-tile :to="{path: '/event/' + memory.title}" :key="memory.title" avatar>
                 <v-list-tile-avatar v-if="!memory.done">
                   <img src="../assets/memory.png">
                 </v-list-tile-avatar>
@@ -39,7 +40,6 @@
                     <v-icon>clear</v-icon>
                   </v-btn>
                 </v-list-tile-action>
-
               </v-list-tile>
               <v-divider v-if="(index + 1) < countMemories" :key="`divider-${index}`"></v-divider>
             </template>
@@ -73,12 +73,14 @@
 </template>
 <script>
 import moment from 'moment'
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+import VueNotifications from 'vue-notifications'
 export default {
   name: 'Sidebar',
   data: () => {
     return {
+      error: null,
       newMemory: '',
       memoryId: 0
     }
@@ -87,27 +89,36 @@ export default {
     VuePerfectScrollbar
   },
   computed: {
-    ...mapState([
-      'memories'
-    ]),
     ...mapGetters([
-      'countMemories'
+      'countMemories',
+      'getMemories'
     ])
   },
+
   methods: {
+    clearError () {
+      this.error = null
+    },
     addMemory () {
-      if (this.newMemory !== '' || this.newMemory !== null) {
-        const memory = { id: this.memoryId++, title: this.newMemory, description: 'Insert memory description here', done: false, createdDate: moment().format('MMMM Do YYYY') }
-        // populate the event array in the store
-        this.$store.state.memories.push(memory)
+      if (this.newMemory && this.newMemory.trim() !== '') {
+        const memory = { id: this.memoryId++, title: this.newMemory.trim(), description: 'Insert memory description here', done: false, createdDate: moment().format('MMMM Do YYYY') }
+        // populate the memory array in the store
+        this.$store.dispatch('createMemory', memory)
         // clear input field
         this.newMemory = ''
       } else {
-        this.error = "Can't add an empty memory"
+        // this.error = "Can't add an empty memory"
+        VueNotifications.error({
+          message: 'Can\'t add an empty memory'
+        })
       }
     },
     removeMemory (index) {
-      this.$store.state.memories.splice(index, 1)
+      // dispatch delete action in the store to delete a memory
+      this.$store.dispatch('deleteMemory', index)
+    },
+    navigateTo (route) {
+      this.$router.push(route)
     }
   }
 }

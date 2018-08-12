@@ -9,6 +9,7 @@
         </v-container>
       </v-content>
       <app-footer></app-footer>
+
     </v-app>
   </div>
 </template>
@@ -21,6 +22,9 @@ export default {
   components: {
     AppHeader,
     AppFooter
+  },
+  mounted () {
+    this.$router.push('/')
   }
 }
 </script>

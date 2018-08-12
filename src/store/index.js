@@ -29,5 +29,20 @@ export const store = new Vuex.Store({
     UPDATE_MEMORY (state, index, memory) {
       state.memories.splice(index, 1, memory)
     }
+  },
+  // actions
+  actions: {
+    createMemory (context, payload) {
+      const memory = payload
+      context.commit('CREATE_MEMORY', memory)
+    },
+    deleteMemory (context, payload) {
+      const index = payload
+      context.commit('DELETE_MEMORY', index)
+    },
+    updateMemory (context, payload) {
+      const { index, memory } = payload
+      context.commit('UPDATE_MEMORY', index, memory)
+    }
   }
 })
